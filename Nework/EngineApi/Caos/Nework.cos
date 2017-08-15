@@ -1,0 +1,629 @@
+*******************************
+*******************************
+****** INSTALATION - ALL ******
+*******************************
+*******************************
+
+***********************
+***
+***If no MessageHandler and no PortalHandler exists
+***
+***Make MessageHandler
+***
+***Make CommandHandler
+***
+***********************
+setv va33 0
+enum 1 1 24412
+	setv va33 1
+next
+enum 1 1 24413
+	setv va33 1
+next
+doif va33 = 0
+
+*make MessageHandler
+	new: simp 1 1 24413 "blnk" 0 0 0
+	attr 16
+	tick 20
+
+*make CommandHandler
+	new: simp 1 1 24412 "blnk" 0 0 0
+	attr 16
+	tick 100
+
+*Write a new Message
+	setv va70 0
+	new: simp 1 1 24414 "blnk" 0 0 0
+	attr 16
+	setv ov00 wtik
+	setv ov01 va70
+	sets ov02 "MessageAndCommandHandler_New"
+*	set Message to state Done
+	setv ov99 1
+*End message
+
+endi
+
+*******************
+***Make a Portal***
+*******************
+*Portal (Door)
+new: simp 2 2 24411 "ds portals" 39 0 400
+attr 215
+*Click sends "Deactivate", Open/Close
+clac 2
+elas 0
+accg 5
+aero 10
+perm 60
+bhvr 1
+puhl -1 95 110
+*set state Closed
+setv ov01 0
+*set state Off
+setv ov02 0
+*ov00 is ID
+mvto 371 9086
+*Write a new Message
+setv va70 UNID
+new: simp 1 1 24414 "blnk" 0 0 0
+attr 16
+setv ov00 wtik
+setv ov01 va70
+sets ov02 "Portal_New"
+*	set Message to state Done
+setv ov99 1
+*End message
+
+
+******************************
+******************************
+****** EVENTS - PORTALS ******
+******************************
+******************************
+
+*Deactivate - Click
+*Open/Close
+scrp 2 2 24411 0
+	lock
+*if state Closed
+	doif ov01 = 0
+*set non-mousable
+		attr 213
+*open portal device
+		anim [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19]
+		over
+*if On
+		doif ov02 = 1
+*start wormhole
+			anim [20 21 22 23]
+			over
+*spin-up wormhole
+			anim [24 25 26 27 28 29 30 31 32 33 34 35 36 37 255]
+		endi
+*set state Open
+		setv ov01 1
+*Write a new Message
+		setv va70 UNID
+		new: simp 1 1 24414 "blnk" 0 0 0
+		attr 16
+		setv ov00 wtik
+		setv ov01 va70
+		sets ov02 "Portal_Open"
+*		set Message to state Done
+		setv ov99 1
+*End Message
+		targ ownr
+*set visible
+		attr 197
+*else state is Open
+	else
+*Write a new Message
+		setv va70 UNID
+		new: simp 1 1 24414 "blnk" 0 0 0
+		attr 16
+		setv ov00 wtik
+		setv ov01 va70
+		sets ov02 "Portal_Close"
+*		set Message to state Done
+		setv ov99 1
+*End Message
+		targ ownr
+*set state Closed
+		setv ov01 0
+*set invisible (may already be invisible, meh)
+		attr 213
+*if On
+		doif ov02 = 1
+*stop wormhole
+			anim [23 22 21 20 19]
+			over
+		endi
+*close portal device
+		anim [18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 0]
+		over
+*set mousable		
+		attr 215
+	endi
+	unlk
+endm
+
+*Activate 1 (Push)
+*Export norn
+scrp 2 2 24411 1
+	inst
+	targ from
+	doif targ <> null
+*stim activate 1
+		stim writ targ 13 1
+*stim traveled through meta door
+		stim writ targ 95 1
+*save norn's moniker
+		sets va01 gtos 0
+*attempt export
+		doif pray expo "EPNW" = 0
+*success
+*Write a new Message
+			setv va70 UNID
+			new: simp 1 1 24414 "blnk" 0 0 0
+			attr 16
+			setv ov00 wtik
+			setv ov01 va70
+			sets ov02 "Portal_Exported "
+*			norn's moniker
+			adds ov02 va01
+*			set Message to state Done
+			setv ov99 1
+*End message
+		endi
+	endi
+endm
+
+*Received command
+*_p1_ is command
+*_p2_ is the parameter if any
+scrp 2 2 24411 1000
+	lock
+******************
+***begin TurnOn***
+******************
+	doif _p1_ = "Portal_On"
+*if->     state Off and state Open
+		doif ov02 = 0 and ov01 = 1
+*start wormhole
+			anim [20 21 22 23]
+			over
+*spin-up wormhole
+			anim [24 25 26 27 28 29 30 31 32 33 34 35 36 37 255]
+		endi
+*set state On
+		setv ov02 1
+*Write a new Message
+		setv va70 UNID
+		new: simp 1 1 24414 "blnk" 0 0 0
+		attr 16
+		setv ov00 wtik
+		setv ov01 va70
+		sets ov02 "Portal_TurnedOn"
+*	set Message to state Done
+		setv ov99 1
+*End message
+****************
+***end TurnOn***
+****************
+*******************
+***begin TurnOff***
+*******************
+	elif _p1_ = "Portal_Off"
+*if->      state On and state Open
+		doif ov02 = 1 and ov01 = 1
+*stop wormhole
+			anim [23 22 21 20 19]
+			over
+		endi
+*set state Off
+		setv ov02 0
+*Write a new Message
+		setv va70 UNID
+		new: simp 1 1 24414 "blnk" 0 0 0
+		attr 16
+		setv ov00 wtik
+		setv ov01 va70
+		sets ov02 "Portal_TurnedOff"
+*	set Message to state Done
+		setv ov99 1
+*End message
+*****************
+***end TurnOff***
+*****************
+******************
+***beign Import***
+******************
+*_P1_ is PRAY resource name (norn's moniker.RESOURCE TYPE)
+	elif _p1_ = "Portal_Import"
+		pray refr
+		targ from
+		doif targ <> null and fmly = 1 and gnus = 1 and spcs = 24411
+			setv va01 posx
+			setv va02 posy
+			doif pray test _p2_ <> 0
+* Stop cloning on import, just for this creature! :)
+				inst
+				setv eame "engine_clone_upon_import" 0
+				setv va99 pray impo _p2_ 1 0
+* Turn it back on. Seems like the right thing to do for some reason, meh
+				setv eame "engine_clone_upon_import" 1
+				slow
+				doif targ <> null and targ <> ownr
+					mvft va01 va02
+*stim activate 1
+					stim writ targ 13 1
+*stim traveled through meta door
+					stim writ targ 95 1
+*Write a new Message
+					setv va70 UNID
+					new: simp 1 1 24414 "blnk" 0 0 0
+					attr 16
+					setv ov00 wtik
+					setv ov01 va70
+					sets ov02 "Portal_Imported "
+					adds ov02 _p2_
+*				set Message to state Done
+					setv ov99 1
+*End message
+				endi
+			endi
+		endi
+****************
+***end Import***
+****************
+*****************
+***begin SetId***
+*****************
+	elif _p1_ = "Portal_SetId"
+		sets ov00 _p2_
+*Write a new Message
+		setv va70 UNID
+		new: simp 1 1 24414 "blnk" 0 0 0
+		attr 16
+		setv ov00 wtik
+		setv ov01 va70
+		sets ov02 "Portal_SetId "
+		adds ov02 _p2_
+*		set Message to state Done
+		setv ov99 1
+*End message
+***************
+***end SetId***
+***************
+*****************
+***begin SetName*****
+*******************
+	elif _p1_ = "Portal_SetName"
+		sets name "tooltip" _p2_
+*Write a new Message
+		setv va70 UNID
+		new: simp 1 1 24414 "blnk" 0 0 0
+		attr 16
+		setv ov00 wtik
+		setv ov01 va70
+		sets ov02 "Portal_SetName "
+		adds ov02 _p2_
+*		set Message to state Done
+		setv ov99 1
+*End message
+*****************
+***end SetName***
+*****************
+************************
+***begin BogusCommand***
+************************
+	else
+*Write a new Message
+		setv va70 UNID
+		new: simp 1 1 24414 "blnk" 0 0 0
+		attr 16
+		setv ov00 wtik
+		setv ov01 va70
+		sets ov02 "Portal_BogusCommand "
+*if _p1_ is a string
+		doif type _p1_ = 2
+			adds ov02 _p1_
+		else
+			adds ov02 "NoCommand"
+		endi
+		adds ov02 " "
+*if _p2_ is a string
+		doif type _p2_ = 2
+			adds ov02 _p2_
+		else
+			adds ov02 "NoParameter"
+		endi
+*		set Message to state Done
+		setv ov99 1
+*End message
+**********************
+***end BogusCommand***
+**********************
+	endi
+	unlk
+endm
+
+*World Load Event
+scrp 2 2 24411 128
+*turn yourself off (external Newark application should turn back on)
+	call 1000 "TurnOff" null
+*Write a new Message
+	setv va70 UNID
+	new: simp 1 1 24414 "blnk" 0 0 0
+	attr 16
+	setv ov00 wtik
+	setv ov01 va70
+	sets ov02 "Portal_WorldLoad "
+	adds ov02 ov00
+*	set Message to state Done
+	setv ov99 1
+*End message
+endm
+
+*Exception script
+scrp 2 2 24411 255
+*$#!
+*...
+*...
+*Uh
+*I guess...
+*Write a new Message
+	setv va70 UNID
+	new: simp 1 1 24414 "blnk" 0 0 0
+	attr 16
+	setv ov00 wtik
+	setv ov01 va70
+	sets ov02 "Portal_Exception"
+*	set Message to state Done
+	setv ov99 1
+*End message
+endm
+
+**************************************
+**************************************
+****** EVENTS - COMMAND HANDLER ******
+**************************************
+**************************************
+
+*Timer
+scrp 1 1 24412 9
+*pause timer.
+	tick 0
+	lock
+*set rewrite file=false
+	setv va40 0
+	file iope 0 "Nework-Engine-InPipe.txt"
+	doif inok = 1
+*read in portal id and command (or id and moniker)
+		sets va00 innl
+		loop
+*line will be in form as:
+*"0001 Portal_TurnOn" meaning portal #1 turn on
+*"0090 Portal_Import 001-dawn-fsdf-sf-sdf-sdfsd" meaning portal #9 import norn 001-dawn-... 
+
+*set va01 to "0090"
+*set va02 to "Turn_On" or ("Portal_Import 001-dawn-...")
+*			va20=indexOfFirstSpaceChar, va21=lengthOfString
+			setv va20 sins va00 1 " "
+*	if line valid (space char index makes sense)
+			doif va20 > 1
+				setv va21 strl va00
+*			va21=lengthOfSecondSubstring, va20=lengthOfFirstSubstring
+				subv va21 va20
+				subv va20 1
+*			va01=firstSubstring
+				sets va01 subs va00 1 va20
+*			va20=indexOfFirstCharOfSecondSubstring
+				addv va20 2
+*			va02=secondSubstring
+				sets va02 subs va00 va20 va21
+
+*set va20 to index of second space char, if any
+				setv va20 sins va02 1 " "
+				doif va20 <> -1
+*it's an argumented command ("Portal_Import 001-dawn-...")
+*set va02 to "Portal_Import"
+*set va03 to "001-dawn-..."
+*			va20=indexOfSecondSpaceChar, va21=lengthOfSecondAndThirdString(plusASpace)
+*				setv va20 sins va02 1 " " (already done)
+					setv va21 strl va02
+*			va21=lengthOfThirdSubstring, va20=lengthOfSecondSubstring
+					subv va21 va20
+					subv va20 1
+*			va09(va02)=secondSubstring
+					sets va09 subs va02 1 va20
+*			va20=indexOfFirstCharOfThirdSubstring
+					addv va20 2
+*			va03=thirdSubstring
+					sets va03 subs va02 va20 va21
+*			va02=secondSubstring
+					sets va02 va09
+				else
+*set va03 to null (because that's an OK thing for a flag *sigh*)
+					seta va03 null
+				endi
+*va01 = unique ID for agent (internal ID)
+*va02 = command
+*va03 = argumet (if any)
+				seta va30 agnt stoi va01
+*if portal exists
+				doif va30 <> null
+*trigger Portal's command script with _p1_=command and _p2_=argument(if any)
+					mesg wrt+ va30 1000 va02 va03 0
+				else
+*portal with that id not found
+*Write a new Message
+					setv va70 0
+					new: simp 1 1 24414 "blnk" 0 0 0
+					attr 16
+					setv ov00 wtik
+					setv ov01 va70
+					sets ov02 "CommandHandler_NoPortalFound "
+					adds ov02 va01
+*				set Message to state Done
+					setv ov99 1
+				endi
+*set rewrite file=true
+				setv va40 1
+			elif strl va00 <> 0
+*gargabe line
+*Write a new Message
+				setv ov99 1
+				setv va70 0
+				new: simp 1 1 24414 "blnk" 0 0 0
+				attr 16
+				setv ov00 wtik
+				setv ov01 va70
+				sets ov02 "CommandHandler_GarbageLineIn "
+				adds ov02 va00
+*	set Message to state Done
+				setv ov99 1
+*End message
+*set rewrite file=true
+				setv va40 1
+			endi
+*read in portal id and command (or id and moniker)
+			sets va00 innl
+		untl va00 = ""
+*if rewriteFile==true
+		doif va40 = 1
+*erase file
+			file oope 0 "Nework-Engine-InPipe.txt" 0
+			outs ""
+			file oclo
+		endi
+		*close the input stream AFTER erasing file.
+		* hopefully this way the external program can't write a
+		* command between us reading it and erasing it
+		file iclo
+	endi
+	unlk
+	targ ownr
+	tick 200
+endm
+
+*Exception script
+scrp 1 1 24412 255
+*$#!
+*...
+*...
+*Uh
+*I guess...
+*Write a new Message
+	setv ov99 1
+	setv va70 0
+	new: simp 1 1 24414 "blnk" 0 0 0
+	attr 16
+	setv ov00 wtik
+	setv ov01 va70
+	sets ov02 "CommandHandler_Exception"
+*	set Message to state Done
+	setv ov99 1
+*End message
+	wait 200
+	targ ownr
+	tick 20
+endm
+
+**************************************
+**************************************
+****** EVENTS - MESSAGE HANDLER ******
+**************************************
+**************************************
+
+*Write to OutPipe
+scrp 1 1 24413 9
+	tick 0
+	lock
+*if there are Messages
+	rtar 1 1 24414
+	doif targ <> null
+		file oope 0 "Nework-Engine-OutPipe.txt" 1
+		enum 1 1 24414
+*if message state Done (finished being written)
+			doif ov99 = 1
+*world tick when message was written
+				outs vtos ov00
+				outs " "
+*agent's unique identifier/internal id. constant per game session
+				outs vtos ov01
+				outs " "
+*message
+				outs ov02
+				outs "\n"
+				kill targ
+			endi
+		next
+		file oclo
+	endi
+	unlk
+	targ ownr
+	tick 200
+endm
+
+*Exception script
+scrp 1 1 24413 255
+*$#!
+*...
+*...
+*Uh
+*I guess...
+*Write a new Message
+	doif ov99 <> 1
+		setv ov99 1
+		setv va70 0
+		new: simp 1 1 24414 "blnk" 0 0 0
+		attr 16
+		setv ov00 va70
+		setv ov01 wtik
+		sets ov02 "MessageHandler_Exception"
+*		set Message to state Done
+		setv ov99 1
+*End message
+	endi
+	wait 200
+	targ ownr
+	setv ov99 0
+	tick 20
+endm
+
+***************************
+***************************
+****** REMOVAL - ALL ******
+***************************
+***************************
+
+rscr
+enum 2 2 24411
+	kill targ
+next
+
+enum 1 1 24412
+	kill targ
+next
+
+enum 1 1 24413
+	kill targ
+next
+enum 1 1 24414
+	kill targ
+next
+
+scrx 2 2 24411 0
+scrx 2 2 24411 1
+scrx 2 2 24411 1000
+scrx 2 2 24411 128
+scrx 2 2 24411 255
+
+scrx 1 1 24412 9
+scrx 1 1 24412 255
+
+scrx 1 1 24413 9
+scrx 1 1 24413 255
