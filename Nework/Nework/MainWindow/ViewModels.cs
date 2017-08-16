@@ -8,6 +8,6 @@ namespace Nework.Gui.ViewModels
 {
     public class MainWindowViewModel
     {
-        public WorldTabViewModel WorldViewModel { get; } = new WorldTabViewModel();
+
     }
 }

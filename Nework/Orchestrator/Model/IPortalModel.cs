@@ -17,5 +17,9 @@ namespace Nework.Orchestration.Model
         string Name { get; set; }
         
         Pigment Color { get; }
+
+        void TurnOn();
+        
+        void TurnOff();
     }    
 }

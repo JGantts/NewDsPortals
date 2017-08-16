@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Nework.Gui
+namespace Nework.Orchestration.Common
 {
     public static class BridgeBuilder
     {
@@ -19,6 +15,9 @@ namespace Nework.Gui
             ObservableCollection<TUpper> upper,
             LowerToUpper<TLower, TUpper> lowerToUpper)
         {
+            Debug.Assert(lower != null);
+            Debug.Assert(upper != null);
+
             _Bridges.Add(
                 new ObservableCollectionBridge<TLower, TUpper>
                 (lower, upper, lowerToUpper));
@@ -64,7 +63,7 @@ namespace Nework.Gui
 
             private void Upper_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
             {
-                throw new NeworkGuiException();
+                throw new OrchestrationException();
             }
         }
     }

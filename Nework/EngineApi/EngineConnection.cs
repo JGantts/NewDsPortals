@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 
 namespace Nework.EngineApi
 {
     public class EngineConnection
     {
-        public MessageEventHandler MessageEvent;
+        public EventHandler<MessageEventArgs> MessageEvent;
 
-        //private DirectoryInfo _WorldDir { get; }
-
-        private CommandWriter _CommandWriter { get; }
-        //private MessgeReader _MessageReader { get; }
+        private CommandWriter m_CommandWriter { get; }
 
         public EngineConnection(DirectoryInfo worldDir)
         {
@@ -34,14 +29,14 @@ namespace Nework.EngineApi
             }
 
             MessgeReader reader = new MessgeReader(journalDir, MessageEvent);
-            _CommandWriter = new CommandWriter(journalDir);
+            m_CommandWriter = new CommandWriter(journalDir);
         }
 
         public void SendCommand(int agentId, ParamaterlessCommandType commandType)
-            => _CommandWriter.SendCommand(agentId, commandType);
+            => m_CommandWriter.SendCommand(agentId, commandType);
 
 
         public void SendCommand(int agentId, ParamateredCommandType commandType, string parameter)
-            => _CommandWriter.SendCommand(agentId, commandType, parameter);
+            => m_CommandWriter.SendCommand(agentId, commandType, parameter);
         }
  }

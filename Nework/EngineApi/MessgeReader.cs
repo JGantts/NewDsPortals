@@ -10,20 +10,20 @@ namespace Nework.EngineApi
 {
     class MessgeReader
     {
-        private string _EngineOutFilePath { get; }
+        private string m_EngineOutFilePath { get; }
 
-        private object _Lock = new object();
+        private object m_Lock = new object();
 
-        private MessageEventHandler _MessageEvent;
+        private event EventHandler<MessageEventArgs> m_MessageEvent;
 
-        internal MessgeReader(DirectoryInfo journalDir, MessageEventHandler messageEvent)
+        internal MessgeReader(DirectoryInfo journalDir, EventHandler<MessageEventArgs> messageEvent)
         {
             Debug.Assert(journalDir != null);
             Debug.Assert(journalDir.Exists);
             
-            _EngineOutFilePath = Path.Combine(journalDir.FullName, "Nework-Engine-OutPipe.txt");
+            m_EngineOutFilePath = Path.Combine(journalDir.FullName, "Nework-Engine-OutPipe.txt");
 
-            _MessageEvent = messageEvent;
+            m_MessageEvent = messageEvent;
 
             BackgroundWorker timer = new BackgroundWorker();
             timer.DoWork += (object sender, DoWorkEventArgs e) =>
@@ -44,7 +44,7 @@ namespace Nework.EngineApi
         /// </summary>
         private void ReadMessages()
         {
-            if (!File.Exists(_EngineOutFilePath))
+            if (!File.Exists(m_EngineOutFilePath))
             {
                 //There's still a race condition.
                 //  (would be unlikely, but file may be deleted by some weird random process)
@@ -58,7 +58,7 @@ namespace Nework.EngineApi
             try
             {
                 fileStream = new FileStream(
-                    _EngineOutFilePath, FileMode.OpenOrCreate,
+                    m_EngineOutFilePath, FileMode.OpenOrCreate,
                     FileAccess.ReadWrite, FileShare.None);
                 StreamReader reader = new StreamReader(fileStream);
 
@@ -96,12 +96,12 @@ namespace Nework.EngineApi
                         if (Enum.TryParse(chunks[2], out lessType))
                         {
                             Debug.Assert(chunks.Length == 3);
-                            _MessageEvent(this, new ParameterlessMessageEventArgs(agentId, worldTicks, lessType));
+                            m_MessageEvent(this, new ParameterlessMessageEventArgs(agentId, worldTicks, lessType));
                         }
                         else if (Enum.TryParse(chunks[2], out edType))
                         {
                             Debug.Assert(chunks.Length == 4);
-                            _MessageEvent(this, new ParameteredMessageEventArgs(agentId, worldTicks, edType, chunks[4]));
+                            m_MessageEvent(this, new ParameteredMessageEventArgs(agentId, worldTicks, edType, chunks[4]));
                         }
                         else
                         {

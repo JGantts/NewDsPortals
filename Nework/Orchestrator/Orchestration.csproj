@@ -40,9 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\BridgeBuilder.cs" />
     <Compile Include="Common\PropertyChangeSource.cs" />
+    <Compile Include="EngineHandlers\PortalHandler.cs" />
+    <Compile Include="EngineHandlers\WorldHandler.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="Model\IPortalModel.cs" />
+    <Compile Include="Model\MainModel.cs" />
     <Compile Include="Model\PortalModel.cs" />
     <Compile Include="Model\Pigment.cs" />
     <Compile Include="Model\IWorldModel.cs" />
@@ -56,5 +60,6 @@
       <Name>EngineApi</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

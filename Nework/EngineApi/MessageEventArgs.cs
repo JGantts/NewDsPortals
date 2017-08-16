@@ -1,32 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nework.EngineApi
 {
-    public delegate void MessageEventHandler(object sender, IMessageEventArgs a);
-
-    public interface IMessageEventArgs
-    {
-        int AgentId { get; }
-        int WorldTciks { get; }
-    }
-
-    public interface IParameterlessMessageEventArgs : IMessageEventArgs
-    {
-        ParameterlessMessegeType Type { get; }
-    }
-
-
-    public interface IParameteredMessageEventArgs : IMessageEventArgs
-    {
-        ParameteredMessegeType Type { get; }
-        string Parameter { get; }
-    }
-
-    internal abstract class MessageEventArgs : IMessageEventArgs
+     public class MessageEventArgs : EventArgs
     {
         public int AgentId { get; }
         public int WorldTciks { get; }
@@ -38,7 +14,7 @@ namespace Nework.EngineApi
         }
     }
 
-    internal class ParameterlessMessageEventArgs : MessageEventArgs, IParameterlessMessageEventArgs
+    public class ParameterlessMessageEventArgs : MessageEventArgs
     {
         public ParameterlessMessegeType Type { get; }
 
@@ -49,7 +25,7 @@ namespace Nework.EngineApi
         }
     }
 
-    internal class ParameteredMessageEventArgs : MessageEventArgs, IParameteredMessageEventArgs
+    public class ParameteredMessageEventArgs : MessageEventArgs
     {
         public string Parameter { get; }
         public ParameteredMessegeType Type { get; }

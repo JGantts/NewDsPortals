@@ -1,4 +1,5 @@
-﻿using Nework.Gui.ViewModels;
+﻿using Nework.Gui.Common;
+using Nework.Gui.ViewModels;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
 
@@ -17,7 +18,7 @@ namespace Nework.Gui.Views
             InitializeComponent();
 
             BridgeBuilder.BuildBridge
-                (m_ViewModel.WorldTabs,
+                (m_ViewModel.WorldTabViewModels,
                 m_WorldTabViews,
                 vm => new WorldTabView(vm));
         }

@@ -1,22 +1,22 @@
 ﻿using System.Collections.ObjectModel;
 using Nework.Orchestration.Model;
-using Nework.Orchestration;
+using Nework.Gui.Common;
 
 namespace Nework.Gui.ViewModels
 {
     public class WorldTabViewModel
     {
+        private IWorldModel wm;
+
         public string Name { get; }
 
-        public ObservableCollection<PortalViewModel> Portals { get; } 
+        public ObservableCollection<PortalViewModel> Portals { get; }
             = new ObservableCollection<PortalViewModel>();
 
-        public WorldTabViewModel()
+        public WorldTabViewModel(IWorldModel worldModel)
         {
-            IWorldModel world = Orchestrator.World;
-
             BridgeBuilder.BuildBridge
-                (world.Portals,
+                (worldModel.IPortalModels,
                 this.Portals,
                 (model => new PortalViewModel(model)));
 

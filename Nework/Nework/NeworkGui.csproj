@@ -59,7 +59,7 @@
     <Compile Include="Common\PropertyChangeSource.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="MainWindow\ViewModels.cs" />
-    <Compile Include="BridgeBuilder.cs" />
+    <Compile Include="Common\BridgeBuilder.cs" />
     <Compile Include="WorldsTab\PortalView.xaml.cs">
       <DependentUpon>PortalView.xaml</DependentUpon>
     </Compile>

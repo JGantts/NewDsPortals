@@ -1,4 +1,5 @@
 ﻿using Nework.Orchestration.Common;
+using Nework.Orchestration.EngineHandlers;
 using System.Collections.ObjectModel;
 
 namespace Nework.Orchestration.Model
@@ -38,9 +39,19 @@ namespace Nework.Orchestration.Model
         }
         private Pigment m_Color = new Pigment();
 
-        public PortalModel(string name)
+        private PortalHandler m_InnerPortal { get; }
+
+        public PortalModel(PortalHandler innerPortal)
         {
-            Name = name;
+            m_InnerPortal = innerPortal;
+            Name = innerPortal.Name;
         }
+
+        public void TurnOn() =>
+            m_InnerPortal.TurnOn();
+
+        public void TurnOff() =>
+            m_InnerPortal.TurnOff();
+        
     }
 }

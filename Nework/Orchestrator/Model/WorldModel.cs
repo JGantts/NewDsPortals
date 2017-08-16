@@ -1,19 +1,20 @@
 ﻿using Nework.Orchestration.Common;
+using Nework.Orchestration.EngineHandlers;
 using System.Collections.ObjectModel;
 
 namespace Nework.Orchestration.Model
 {
     internal class WorldModel : PropertyChangeSource, IWorldModel
     {
-        public ObservableCollection<IPortalModel> Portals { get; }
+        public ObservableCollection<IPortalModel> IPortalModels { get; }
+            = new ObservableCollection<IPortalModel>();
 
-        public WorldModel()
+        public WorldModel(WorldHandler worldHandler)
         {
-            Portals = new ObservableCollection<IPortalModel>()
-            {
-                new PortalModel("Portal"),
-                new PortalModel("Portal 2"),
-            };
+            BridgeBuilder.BuildBridge
+                (worldHandler.PortalHandlers,
+                this.IPortalModels,
+                ph => new PortalModel(ph));
         }
     }
 }

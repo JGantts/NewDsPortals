@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Nework.Gui.Common;
+using Nework.Orchestration.Model;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nework.Gui.ViewModels
 {
     class WorldTabControllerViewModel
     {
-        public ObservableCollection<WorldTabViewModel> WorldTabs { get; }
+        public ObservableCollection<WorldTabViewModel> WorldTabViewModels { get; }
+            = new ObservableCollection<WorldTabViewModel>();
 
         public WorldTabControllerViewModel()
         {
-            WorldTabs = new ObservableCollection<WorldTabViewModel>()
-            {
-                new WorldTabViewModel(),
-                new WorldTabViewModel(),
-            };
+            var temp = new MainModel();
+
+            BridgeBuilder.BuildBridge
+                (temp.IWorldModels,
+                WorldTabViewModels,
+                wm => new WorldTabViewModel(wm));
         }
     }
 }
