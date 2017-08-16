@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nework.EngineApi.Exceptions;
+using System;
 using System.IO;
 
 namespace Nework.EngineApi

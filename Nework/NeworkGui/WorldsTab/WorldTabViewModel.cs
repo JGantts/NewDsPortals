@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using Nework.Orchestration.Model;
-using Nework.Gui.Common;
+using Nework.CommonLibrary;
 
 namespace Nework.Gui.ViewModels
 {

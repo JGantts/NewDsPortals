@@ -43,7 +43,7 @@
   <ItemGroup>
     <Compile Include="CommandWriter.cs" />
     <Compile Include="Enums.cs" />
-    <Compile Include="Exceptions.cs" />
+    <Compile Include="Exceptions\EngineApiException.cs" />
     <Compile Include="EngineConnection.cs" />
     <Compile Include="MessageEventArgs.cs" />
     <Compile Include="MessgeReader.cs" />

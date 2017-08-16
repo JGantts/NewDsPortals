@@ -56,10 +56,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Common\PropertyChangeSource.cs" />
-    <Compile Include="Exceptions.cs" />
+    <Compile Include="Exceptions\NetworkGuiExceptions.cs" />
     <Compile Include="MainWindow\ViewModels.cs" />
-    <Compile Include="Common\BridgeBuilder.cs" />
     <Compile Include="WorldsTab\PortalView.xaml.cs">
       <DependentUpon>PortalView.xaml</DependentUpon>
     </Compile>
@@ -124,7 +122,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Orchestrator\Orchestration.csproj">
+    <ProjectReference Include="..\CommonLibrary\CommonLibrary.csproj">
+      <Project>{54520243-084c-4059-bbfb-a981428f7777}</Project>
+      <Name>CommonLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchestration\Orchestration.csproj">
       <Project>{7A6A4A29-C9AC-4B60-93B2-1E1B220BB06D}</Project>
       <Name>Orchestration</Name>
     </ProjectReference>

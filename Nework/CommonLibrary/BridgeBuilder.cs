@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Nework.CommonLibrary.Exceptions;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 
-namespace Nework.Orchestration.Common
+namespace Nework.CommonLibrary
 {
     public static class BridgeBuilder
     {
@@ -63,7 +65,7 @@ namespace Nework.Orchestration.Common
 
             private void Upper_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
             {
-                throw new OrchestrationException();
+                throw new CommonLibraryException();
             }
         }
     }
