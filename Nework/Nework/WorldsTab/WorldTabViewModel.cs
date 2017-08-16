@@ -13,7 +13,7 @@ namespace Nework.Gui.ViewModels
 
         public WorldTabViewModel()
         {
-            IWorld world = Orchestrator.World;
+            IWorldModel world = Orchestrator.World;
 
             BridgeBuilder.BuildBridge
                 (world.Portals,

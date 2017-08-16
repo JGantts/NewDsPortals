@@ -42,9 +42,12 @@
   <ItemGroup>
     <Compile Include="Common\PropertyChangeSource.cs" />
     <Compile Include="Exceptions.cs" />
-    <Compile Include="Model\IWorld.cs" />
+    <Compile Include="Model\IPortalModel.cs" />
+    <Compile Include="Model\PortalModel.cs" />
+    <Compile Include="Model\Pigment.cs" />
+    <Compile Include="Model\IWorldModel.cs" />
     <Compile Include="Orchestrator.cs" />
-    <Compile Include="Model\Model.cs" />
+    <Compile Include="Model\WorldModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

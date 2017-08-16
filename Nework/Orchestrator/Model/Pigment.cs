@@ -1,30 +1,5 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-
-namespace Nework.Orchestration.Model
+﻿namespace Nework.Orchestration.Model
 {
-    [Flags]
-    public enum PortalState
-    {
-        On,
-        Open
-    }
-
-    public interface IWorld
-    {
-        ObservableCollection<IPortal> Portals { get; }
-    }
-
-    public interface IPortal : INotifyPropertyChanged
-    {
-        PortalState Current { get; set; }
-        
-        string Name { get; set; }
-        
-        Pigment Color { get; }
-    }
-
     public class Pigment
     {
         public byte Red { get; }

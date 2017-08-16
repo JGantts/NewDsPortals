@@ -3,20 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace Nework.Orchestration.Model
 {
-    internal class World : PropertyChangeSource, IWorld
-    {
-        public ObservableCollection<IPortal> Portals { get; }
-
-        public World()
-        {
-            Portals = new ObservableCollection<IPortal>()
-            {
-                new Portal("Portal"),
-                new Portal("Portal 2"),
-            };
-        }
-    }
-    internal class Portal : PropertyChangeSource, IPortal
+    internal class PortalModel : PropertyChangeSource, IPortalModel
     {
         public PortalState Current
         {
@@ -51,7 +38,7 @@ namespace Nework.Orchestration.Model
         }
         private Pigment m_Color = new Pigment();
 
-        public Portal(string name)
+        public PortalModel(string name)
         {
             Name = name;
         }

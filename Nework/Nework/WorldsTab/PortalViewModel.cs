@@ -82,8 +82,8 @@ namespace Nework.Gui.ViewModels
             Open = false;
         }
 
-        private IPortal m_Portal { get; }
-        public PortalViewModel(IPortal portal)
+        private IPortalModel m_Portal { get; }
+        public PortalViewModel(IPortalModel portal)
         {
             m_Portal = portal;
             

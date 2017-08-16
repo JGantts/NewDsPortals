@@ -12,8 +12,8 @@ namespace Nework.Orchestration
 {
     public static class Orchestrator
     {
-        public static IWorld World => m_World;
-        private static IWorld m_World { get; } = new World();
+        public static IWorldModel World => m_World;
+        private static IWorldModel m_World { get; } = new WorldModel();
 
         static Orchestrator()
         {
