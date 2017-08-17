@@ -15,16 +15,16 @@ namespace Nework.EngineApi
 
         private object m_Lock = new object();
 
-        private event EventHandler<MessageEventArgs> m_MessageEvent;
+        public event EventHandler<MessageEventArgs> MessageEvent;
 
         internal MessgeReader(DirectoryInfo journalDir, EventHandler<MessageEventArgs> messageEvent)
         {
             Debug.Assert(journalDir != null);
             Debug.Assert(journalDir.Exists);
-            
+
             m_EngineOutFilePath = Path.Combine(journalDir.FullName, "Nework-Engine-OutPipe.txt");
 
-            m_MessageEvent = messageEvent;
+            MessageEvent = messageEvent;
 
             BackgroundWorker timer = new BackgroundWorker();
             timer.DoWork += (object sender, DoWorkEventArgs e) =>
@@ -55,29 +55,36 @@ namespace Nework.EngineApi
 
             List<string> lines = new List<string>();
 
-            FileStream fileStream;
+            FileStream fileStream = null;
             try
             {
-                fileStream = new FileStream(
-                    m_EngineOutFilePath, FileMode.OpenOrCreate,
-                    FileAccess.ReadWrite, FileShare.None);
-                StreamReader reader = new StreamReader(fileStream);
+                lock (m_Lock)
+                {
+                    fileStream = new FileStream(
+                        m_EngineOutFilePath, FileMode.OpenOrCreate,
+                        FileAccess.ReadWrite, FileShare.None);
+                    StreamReader reader = new StreamReader(fileStream);
 
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    lines.Add(line);
-                }
-                lines = lines.Where(l => l.Length > 0).ToList<string>();
-                if (lines.Any())
-                {
-                    //clear the file
-                    fileStream.SetLength(0);
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        lines.Add(line);
+                    }
+                    lines = lines.Where(l => l.Length > 0).ToList<string>();
+                    if (lines.Any())
+                    {
+                        //clear the file
+                        fileStream.SetLength(0);
+                    }
                 }
             }
             catch (Exception)
             {
 
+            }
+            finally
+            {
+                fileStream?.Close();
             }
 
             foreach (string line in lines)
@@ -92,17 +99,21 @@ namespace Nework.EngineApi
                     if (int.TryParse(chunks[0], out worldTicks) &&
                         int.TryParse(chunks[1], out agentId))
                     {
-                        ParameterlessMessegeType lessType;
-                        ParameteredMessegeType edType;
-                        if (Enum.TryParse(chunks[2], out lessType))
+                        MessegeType type;
+                        if (Enum.TryParse(chunks[2], out type))
                         {
-                            Debug.Assert(chunks.Length == 3);
-                            m_MessageEvent(this, new ParameterlessMessageEventArgs(agentId, worldTicks, lessType));
-                        }
-                        else if (Enum.TryParse(chunks[2], out edType))
-                        {
-                            Debug.Assert(chunks.Length == 4);
-                            m_MessageEvent(this, new ParameteredMessageEventArgs(agentId, worldTicks, edType, chunks[4]));
+                            if (chunks.Length == 3)
+                            {
+                                MessageEvent(this, new ParameterlessMessageEventArgs(agentId, worldTicks, type));
+                            }
+                            else if (chunks.Length == 4)
+                            {
+                                MessageEvent(this, new ParameteredMessageEventArgs(agentId, worldTicks, type, chunks[3]));
+                            }
+                            else
+                            {
+                                throw new EngineApiException($"Bad Line. Can't parse line: {line}");
+                            }
                         }
                         else
                         {

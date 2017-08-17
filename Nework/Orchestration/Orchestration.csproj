@@ -40,17 +40,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EngineHandlers\MessageHandler.cs" />
     <Compile Include="EngineHandlers\PortalHandler.cs" />
     <Compile Include="EngineHandlers\WorldHandler.cs" />
     <Compile Include="Exceptions\OrchestrationException.cs" />
-    <Compile Include="Model\IPortalModel.cs" />
-    <Compile Include="Model\MainModel.cs" />
-    <Compile Include="Model\PortalModel.cs" />
-    <Compile Include="Model\Pigment.cs" />
-    <Compile Include="Model\IWorldModel.cs" />
+    <Compile Include="Model\WorldsTab\IPortalModel.cs" />
+    <Compile Include="Model\WorldsTab\MainModel.cs" />
+    <Compile Include="Model\WorldsTab\PortalModel.cs" />
+    <Compile Include="Model\WorldsTab\Pigment.cs" />
+    <Compile Include="Model\WorldsTab\IWorldModel.cs" />
     <Compile Include="Orchestrator.cs" />
-    <Compile Include="Model\WorldModel.cs" />
+    <Compile Include="Model\WorldsTab\WorldModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CommonLibrary\CommonLibrary.csproj">

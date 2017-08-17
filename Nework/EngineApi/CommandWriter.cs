@@ -35,13 +35,13 @@ namespace Nework.EngineApi
             timer.RunWorkerAsync();
         }
 
-        internal void SendCommand(int agentId, ParamaterlessCommandType commandType)
+        internal void SendCommand(int agentId, CommandType commandType)
         {
             SendCommand(agentId, commandType.ToString(), string.Empty);
         }
 
 
-        internal void SendCommand(int agentId, ParamateredCommandType commandType, string parameter)
+        internal void SendCommand(int agentId, CommandType commandType, string parameter)
         {
             if (string.IsNullOrWhiteSpace(parameter))
             {

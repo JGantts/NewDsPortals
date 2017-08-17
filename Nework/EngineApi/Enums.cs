@@ -1,15 +1,12 @@
 ﻿namespace Nework.EngineApi
 {
 
-    public enum ParamaterlessCommandType
+    public enum CommandType
     {
         Portal_TurnOn,
         Portal_TurnOff,
         Portal_Ping,
-    }
 
-    public enum ParamateredCommandType
-    {
         Portal_Import,
         Portal_SetId,
         Portal_SetName,
@@ -21,16 +18,17 @@
         Portal_SetSwap,
     }
 
-    public enum ParameterlessMessegeType
+    public enum MessegeType
     {
+        Portal_Opened,
+        Portal_Closed,
+
         Portal_TurnedOn,
         Portal_TurnedOff,
         Portal_PingReply,
         Portal_WorldLoaded,
-    }
+        Portal_New,
 
-    public enum ParameteredMessegeType
-    {
         Portal_Imported,
         Portal_Exported,
         Portal_NameSet,

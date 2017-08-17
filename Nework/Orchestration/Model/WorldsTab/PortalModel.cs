@@ -23,7 +23,7 @@ namespace Nework.Orchestration.Model
             {
                 _Name = value;
                 OnPropertyChanged(nameof(Name));
-            }
+            }   
         }
         private string _Name = string.Empty;
 
@@ -43,7 +43,7 @@ namespace Nework.Orchestration.Model
         public PortalModel(PortalHandler innerPortal)
         {
             m_InnerPortal = innerPortal;
-            Name = innerPortal.Name;
+            Name = m_InnerPortal.Name;
         }
 
         public void TurnOn() =>

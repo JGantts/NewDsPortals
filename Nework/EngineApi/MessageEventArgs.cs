@@ -6,34 +6,32 @@ namespace Nework.EngineApi
     {
         public int AgentId { get; }
         public int WorldTciks { get; }
+        public MessegeType Type { get; }
 
-        internal MessageEventArgs(int agentId, int worldTicks)
+        internal MessageEventArgs(int agentId, int worldTicks, MessegeType type)
         {
             AgentId = agentId;
             WorldTciks = worldTicks;
+            Type = type;
         }
     }
 
     public class ParameterlessMessageEventArgs : MessageEventArgs
     {
-        public ParameterlessMessegeType Type { get; }
 
-        public ParameterlessMessageEventArgs(int agentId, int worldTicks, ParameterlessMessegeType type)
-            : base(agentId, worldTicks)
+        public ParameterlessMessageEventArgs(int agentId, int worldTicks, MessegeType type)
+            : base(agentId, worldTicks, type)
         {
-            Type = type;
         }
     }
 
     public class ParameteredMessageEventArgs : MessageEventArgs
     {
         public string Parameter { get; }
-        public ParameteredMessegeType Type { get; }
 
-        public ParameteredMessageEventArgs(int agentId, int worldTicks, ParameteredMessegeType type, string parameter)
-            : base(agentId, worldTicks)
+        public ParameteredMessageEventArgs(int agentId, int worldTicks, MessegeType type, string parameter)
+            : base(agentId, worldTicks, type)
         {
-            Type = type;
             Parameter = parameter;
         }
     }

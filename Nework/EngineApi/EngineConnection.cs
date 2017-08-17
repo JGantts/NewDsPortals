@@ -10,8 +10,10 @@ namespace Nework.EngineApi
 
         private CommandWriter m_CommandWriter { get; }
 
-        public EngineConnection(DirectoryInfo worldDir)
+        public EngineConnection(EventHandler<MessageEventArgs> messageEvent, DirectoryInfo worldDir)
         {
+            MessageEvent = messageEvent;
+
             if (worldDir == null)
             {
                 throw new EngineApiException("Bad world directory.",
@@ -30,14 +32,15 @@ namespace Nework.EngineApi
             }
 
             MessgeReader reader = new MessgeReader(journalDir, MessageEvent);
+            reader.MessageEvent += this.MessageEvent;
             m_CommandWriter = new CommandWriter(journalDir);
         }
 
-        public void SendCommand(int agentId, ParamaterlessCommandType commandType)
+        public void SendCommand(int agentId, CommandType commandType)
             => m_CommandWriter.SendCommand(agentId, commandType);
 
 
-        public void SendCommand(int agentId, ParamateredCommandType commandType, string parameter)
+        public void SendCommand(int agentId, CommandType commandType, string parameter)
             => m_CommandWriter.SendCommand(agentId, commandType, parameter);
         }
  }
