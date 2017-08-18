@@ -8,6 +8,7 @@ namespace Nework.Orchestration.Model
         public ObservableCollection<IWorldModel> IWorldModels { get; } 
             = new ObservableCollection<IWorldModel>();
 
+
         public MainModel()
         {
             BridgeBuilder.BuildBridge
@@ -15,5 +16,7 @@ namespace Nework.Orchestration.Model
                 this.IWorldModels,
                 wh => new WorldModel(wh));
         }
+
+        
     }
 }

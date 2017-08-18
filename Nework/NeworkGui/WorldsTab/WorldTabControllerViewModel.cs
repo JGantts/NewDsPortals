@@ -9,12 +9,10 @@ namespace Nework.Gui.ViewModels
         public ObservableCollection<WorldTabViewModel> WorldTabViewModels { get; }
             = new ObservableCollection<WorldTabViewModel>();
 
-        public WorldTabControllerViewModel()
+        public WorldTabControllerViewModel(MainModel mainModel)
         {
-            var temp = new MainModel();
-
             BridgeBuilder.BuildBridge
-                (temp.IWorldModels,
+                (mainModel.IWorldModels,
                 WorldTabViewModels,
                 wm => new WorldTabViewModel(wm));
         }

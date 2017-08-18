@@ -21,11 +21,12 @@ namespace Nework.EngineApi
         {
             Debug.Assert(journalDir != null);
             Debug.Assert(journalDir.Exists);
-
-            m_EngineOutFilePath = Path.Combine(journalDir.FullName, "Nework-Engine-OutPipe.txt");
+            Debug.Assert(messageEvent != null);
 
             MessageEvent = messageEvent;
 
+            m_EngineOutFilePath = Path.Combine(journalDir.FullName, "Nework-Engine-OutPipe.txt");
+            
             BackgroundWorker timer = new BackgroundWorker();
             timer.DoWork += (object sender, DoWorkEventArgs e) =>
             {
@@ -45,11 +46,9 @@ namespace Nework.EngineApi
         /// </summary>
         private void ReadMessages()
         {
-            if (!File.Exists(m_EngineOutFilePath))
+            if (!File.Exists(m_EngineOutFilePath)   //Worlds w/o any portals
+                || MessageEvent == null)            //Started, but no hooks yet
             {
-                //There's still a race condition.
-                //  (would be unlikely, but file may be deleted by some weird random process)
-                //This is mainly for valid worlds w/o any portals
                 return;
             }
 

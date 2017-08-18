@@ -13,8 +13,8 @@ namespace Nework.Gui.Views
 
         public WorldTabController()
         {
-            this.DataContext = new WorldTabControllerViewModel();
-
+            this.DataContext = ViewModelHolder.WorldTabControllerViewModel;
+            
             InitializeComponent();
 
             BridgeBuilder.BuildBridge

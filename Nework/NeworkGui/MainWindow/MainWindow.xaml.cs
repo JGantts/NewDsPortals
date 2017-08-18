@@ -23,7 +23,7 @@ namespace Nework.Gui
     {
         public MainWindow()
         {
-            this.DataContext = new MainWindowViewModel();
+            this.DataContext = ViewModelHolder.MainWindowViewModel;
 
             InitializeComponent();
 

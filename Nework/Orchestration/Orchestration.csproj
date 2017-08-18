@@ -45,7 +45,7 @@
     <Compile Include="EngineHandlers\WorldHandler.cs" />
     <Compile Include="Exceptions\OrchestrationException.cs" />
     <Compile Include="Model\WorldsTab\IPortalModel.cs" />
-    <Compile Include="Model\WorldsTab\MainModel.cs" />
+    <Compile Include="Model\Main\MainModel.cs" />
     <Compile Include="Model\WorldsTab\PortalModel.cs" />
     <Compile Include="Model\WorldsTab\Pigment.cs" />
     <Compile Include="Model\WorldsTab\IWorldModel.cs" />

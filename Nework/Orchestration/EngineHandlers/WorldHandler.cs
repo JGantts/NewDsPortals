@@ -14,14 +14,23 @@ namespace Nework.Orchestration.EngineHandlers
         public ObservableCollection<PortalHandler> PortalHandlers
             = new ObservableCollection<PortalHandler>();
 
+        public ObservableCollection<string> RecentMessages { get; }
+            = new ObservableCollection<string>();
+
         public EngineConnection m_engineConnection { get; }
 
         public WorldHandler(DirectoryInfo worldDir)
         {
-            m_engineConnection = new EngineConnection(
-                new MessageHandler(this).ReceivedMessageEvent, worldDir);
+            EventHandler<MessageEventArgs> handler = (new MessageHandler(this)).ReceivedMessageEvent;
 
-            //m_engineConnection.MessageEvent += new MessageHandler(this).ReceivedMessageEvent;
+            EventHandler<MessageEventArgs> temp = (object sender, MessageEventArgs e)
+                =>
+            {
+                RecentMessages.Add($"{e.WorldTciks} {e.AgentId} {e.Type}");
+                handler(sender, e);
+            };
+
+            m_engineConnection = new EngineConnection(worldDir, temp);
         }
 
         public WorldHandler()

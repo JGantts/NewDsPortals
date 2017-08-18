@@ -1,6 +1,7 @@
 ﻿using Nework.CommonLibrary;
 using Nework.Orchestration.EngineHandlers;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace Nework.Orchestration.Model
 {
@@ -9,12 +10,21 @@ namespace Nework.Orchestration.Model
         public ObservableCollection<IPortalModel> IPortalModels { get; }
             = new ObservableCollection<IPortalModel>();
 
+        public IEnumerable<string> Messages { get; } = new List<string>();
+
+        public ObservableCollection<string> RecentMessages => new ObservableCollection<string>();
+
         public WorldModel(WorldHandler worldHandler)
         {
             BridgeBuilder.BuildBridge
                 (worldHandler.PortalHandlers,
                 this.IPortalModels,
                 ph => new PortalModel(ph));
+
+            BridgeBuilder.BuildBridge
+                (worldHandler.RecentMessages,
+                this.RecentMessages,
+                mess => mess);
         }
     }
 }

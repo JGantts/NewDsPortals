@@ -57,7 +57,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Exceptions\NetworkGuiExceptions.cs" />
-    <Compile Include="MainWindow\ViewModels.cs" />
+    <Compile Include="MainWindow\MainWindowViewModel.cs" />
+    <Compile Include="ViewModelHolder.cs" />
     <Compile Include="WorldsTab\PortalView.xaml.cs">
       <DependentUpon>PortalView.xaml</DependentUpon>
     </Compile>

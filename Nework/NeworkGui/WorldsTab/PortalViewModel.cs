@@ -57,8 +57,6 @@ namespace Nework.Gui.ViewModels
                 _Name = value;
                 m_Portal.Name = _Name;
                 OnPropertyChanged(nameof(Name));
-                On = value.Length % 2 == 0;
-                Open = value.Length % 3 == 0;
             }
         }
         private string _Name;

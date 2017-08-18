@@ -1,6 +1,7 @@
 ﻿using Nework.Gui.ViewModels;
 using System.Windows.Controls;
 using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace Nework.Gui.Views
 {
@@ -10,7 +11,7 @@ namespace Nework.Gui.Views
 
         public WorldTabView(WorldTabViewModel vm)
         {
-            this.DataContext =  vm;
+            this.DataContext = vm;
 
             InitializeComponent();
 
@@ -22,11 +23,15 @@ namespace Nework.Gui.Views
 
         private void PortalViewModels_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            PortalListView.Children.Clear();
-            foreach (PortalViewModel vm in m_ViewModel.Portals)
+            this.Dispatcher.Invoke(
+                () =>
             {
-                PortalListView.Children.Add(new PortalView(vm));
-            }
+                PortalListView.Children.Clear();
+                foreach (PortalViewModel vm in m_ViewModel.Portals)
+                {
+                    PortalListView.Children.Add(new PortalView(vm));
+                }
+            });
         }
     }
 }

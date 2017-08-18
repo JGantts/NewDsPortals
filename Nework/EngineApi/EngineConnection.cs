@@ -6,14 +6,10 @@ namespace Nework.EngineApi
 {
     public class EngineConnection
     {
-        public EventHandler<MessageEventArgs> MessageEvent;
-
         private CommandWriter m_CommandWriter { get; }
 
-        public EngineConnection(EventHandler<MessageEventArgs> messageEvent, DirectoryInfo worldDir)
+        public EngineConnection(DirectoryInfo worldDir, EventHandler<MessageEventArgs> messageEventHandler)
         {
-            MessageEvent = messageEvent;
-
             if (worldDir == null)
             {
                 throw new EngineApiException("Bad world directory.",
@@ -31,8 +27,7 @@ namespace Nework.EngineApi
                     new DirectoryNotFoundException(journalDir.ToString()));
             }
 
-            MessgeReader reader = new MessgeReader(journalDir, MessageEvent);
-            reader.MessageEvent += this.MessageEvent;
+            MessgeReader reader = new MessgeReader(journalDir, messageEventHandler);
             m_CommandWriter = new CommandWriter(journalDir);
         }
 
