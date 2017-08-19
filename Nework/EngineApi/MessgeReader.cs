@@ -11,6 +11,9 @@ namespace Nework.EngineApi
 {
     class MessgeReader
     {
+        private const string EngineOutFile = "Nework-Engine-OutPipe.txt";
+
+        private string m_WorldDirName { get; }
         private string m_EngineOutFilePath { get; }
 
         private object m_Lock = new object();
@@ -25,12 +28,13 @@ namespace Nework.EngineApi
 
             MessageEvent = messageEvent;
 
-            m_EngineOutFilePath = Path.Combine(journalDir.FullName, "Nework-Engine-OutPipe.txt");
-            
+            m_EngineOutFilePath = Path.Combine(journalDir.FullName, EngineOutFile);
+            m_WorldDirName = Path.GetFileName(Path.GetDirectoryName(journalDir.FullName));
+
             BackgroundWorker timer = new BackgroundWorker();
             timer.DoWork += (object sender, DoWorkEventArgs e) =>
             {
-                //Thread.Sleep(millisecondsTimeout: 0);
+                Thread.Sleep(millisecondsTimeout: 50);
                 while (true)
                 {
                     ReadMessages();
@@ -77,9 +81,9 @@ namespace Nework.EngineApi
                     }
                 }
             }
-            catch (Exception)
+            catch (UnauthorizedAccessException e)
             {
-
+                throw new EngineApiException($"Couldn't open {EngineOutFile} of world {m_WorldDirName}", e);
             }
             finally
             {

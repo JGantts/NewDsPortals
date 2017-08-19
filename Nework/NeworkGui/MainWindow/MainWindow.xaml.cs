@@ -21,13 +21,30 @@ namespace Nework.Gui
     /// </summary>
     public partial class MainWindow : Window
     {
+        public MainWindowViewModel Vm => (MainWindowViewModel)DataContext;
+
         public MainWindow()
         {
             this.DataContext = ViewModelHolder.MainWindowViewModel;
 
             InitializeComponent();
 
+            Vm.RecentMessages.CollectionChanged += RecentMessages_CollectionChanged;
+        }
 
+        private void RecentMessages_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            this.Dispatcher.Invoke(
+                () =>
+                {
+                    RecentMessages.Children.Clear();
+                    foreach (string mess in Vm.RecentMessages)
+                    {
+                        TextBlock temp = new TextBlock();
+                        temp.Text = mess;
+                        RecentMessages.Children.Add(temp);
+                    }
+                });
         }
     }
 }

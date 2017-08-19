@@ -48,7 +48,10 @@
                         <!-- Main View -->
                         <Grid Grid.Column="1">
                             <Border BorderThickness="1" BorderBrush="Black" Margin="5">
-                                <TextBlock Text="Main View"/>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="Main View"/>
+                                    <StackPanel x:Name="RecentMessages"  Orientation="Vertical"/>
+                                </StackPanel>
                             </Border>
                         </Grid>
                     </Grid>

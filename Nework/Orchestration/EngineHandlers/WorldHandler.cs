@@ -21,16 +21,10 @@ namespace Nework.Orchestration.EngineHandlers
 
         public WorldHandler(DirectoryInfo worldDir)
         {
-            EventHandler<MessageEventArgs> handler = (new MessageHandler(this)).ReceivedMessageEvent;
-
-            EventHandler<MessageEventArgs> temp = (object sender, MessageEventArgs e)
-                =>
-            {
-                RecentMessages.Add($"{e.WorldTciks} {e.AgentId} {e.Type}");
-                handler(sender, e);
-            };
-
-            m_engineConnection = new EngineConnection(worldDir, temp);
+            m_engineConnection = new EngineConnection(
+                worldDir,
+                (new MessageHandler(this)).ReceivedMessageEvent
+            );
         }
 
         public WorldHandler()
@@ -41,7 +35,7 @@ namespace Nework.Orchestration.EngineHandlers
         internal void NewPortal(ParameterlessMessageEventArgs eventArgs)
         {
             Debug.Assert(eventArgs.Type == MessegeType.Portal_WorldLoaded);
-            PortalHandlers.Add(new PortalHandler(m_engineConnection, eventArgs));
+            PortalHandlers.Add(new PortalHandler(this, m_engineConnection, eventArgs));
         }
     }
 }

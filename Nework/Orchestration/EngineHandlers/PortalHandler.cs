@@ -13,11 +13,16 @@ namespace Nework.Orchestration.EngineHandlers
 
         private Action<int, CommandType> m_SendParameterlessCommand;
         private Action<int, CommandType, string> m_SendParameteredCommand;
+        private WorldHandler m_WorldHandler { get; }
 
-        public PortalHandler(EngineConnection engineConnection, MessageEventArgs eventArgs)
+        public PortalHandler(WorldHandler worldHandler, EngineConnection engineConnection, MessageEventArgs eventArgs)
         {
             m_SendParameteredCommand = engineConnection.SendCommand;
             m_SendParameterlessCommand = engineConnection.SendCommand;
+            m_WorldHandler = worldHandler;
+
+            m_SendParameteredCommand += SentCommandToEngine;
+            m_SendParameterlessCommand += SentCommandToEngine;
 
             AgentId = eventArgs.AgentId;
 
@@ -61,6 +66,16 @@ namespace Nework.Orchestration.EngineHandlers
                 //case MessegeType.Portal_Closed:
                 //    this.
             }
+        }
+
+        private void SentCommandToEngine(int agentId, CommandType command)
+        {
+            m_WorldHandler.RecentMessages.Add($"{agentId} {command}");
+        }
+
+        private void SentCommandToEngine(int agentId, CommandType command, string str)
+        {
+            m_WorldHandler.RecentMessages.Add($"{agentId} {command}");
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Nework.Orchestration.EngineHandlers
 
         internal void ReceivedMessageEvent(object sender, MessageEventArgs e)
         {
+            m_WorldHandler.RecentMessages.Add($"{e.WorldTciks} {e.AgentId} {e.Type}");
             var senderAgent = m_WorldHandler.PortalHandlers.Where(x => x.AgentId == e.AgentId);
             if (senderAgent.Any())
             {
@@ -25,7 +26,7 @@ namespace Nework.Orchestration.EngineHandlers
                 switch (e.Type)
                 {
                     case MessegeType.Portal_New:
-                        m_WorldHandler.PortalHandlers.Add(new PortalHandler(m_WorldHandler.m_engineConnection, e));
+                        m_WorldHandler.PortalHandlers.Add(new PortalHandler(m_WorldHandler, m_WorldHandler.m_engineConnection, e));
                         break;
                     default:
                         throw new OrchestrationException();
