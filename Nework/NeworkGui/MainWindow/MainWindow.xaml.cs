@@ -30,6 +30,8 @@ namespace Nework.Gui
             InitializeComponent();
 
             Vm.RecentMessages.CollectionChanged += RecentMessages_CollectionChanged;
+
+            RecentMessages_CollectionChanged(null, null);
         }
 
         private void RecentMessages_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

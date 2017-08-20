@@ -3,7 +3,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 
 namespace Nework.Orchestration.EngineHandlers
 {
@@ -29,7 +28,7 @@ namespace Nework.Orchestration.EngineHandlers
 
         public WorldHandler()
             : this(new DirectoryInfo(
-                @"C:\Program Files (x86)\Docking Station\My Worlds\DummyWorld"))
+                @"C:\Users\jacob\Documents\Creatures\Docking Station\My Worlds\DummyWorld"))
         { }
 
         internal void NewPortal(ParameterlessMessageEventArgs eventArgs)

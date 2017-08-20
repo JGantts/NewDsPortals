@@ -10,9 +10,10 @@ namespace Nework.Orchestration.Model
         public ObservableCollection<IPortalModel> IPortalModels { get; }
             = new ObservableCollection<IPortalModel>();
 
-        public IEnumerable<string> Messages { get; } = new List<string>();
+        //public IEnumerable<string> Messages { get; } = new List<string>();
 
-        public ObservableCollection<string> RecentMessages => new ObservableCollection<string>();
+        public ObservableCollection<string> RecentMessages { get; }
+            = new ObservableCollection<string>();
 
         public WorldModel(WorldHandler worldHandler)
         {

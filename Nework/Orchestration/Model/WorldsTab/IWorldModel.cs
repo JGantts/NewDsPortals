@@ -8,7 +8,7 @@ namespace Nework.Orchestration.Model
     {
         ObservableCollection<IPortalModel> IPortalModels { get; }
 
-        IEnumerable<string> Messages { get; }
+        //IEnumerable<string> Messages { get; }
 
         ObservableCollection<string> RecentMessages { get; }
 
