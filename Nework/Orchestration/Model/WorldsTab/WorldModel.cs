@@ -12,18 +12,31 @@ namespace Nework.Orchestration.Model
 
         //public IEnumerable<string> Messages { get; } = new List<string>();
 
+        private Bridge m_IPortalModelsBridge = null;
+        private Bridge m_RecentMessagesBridge = null;
+
         public ObservableCollection<string> RecentMessages { get; }
             = new ObservableCollection<string>();
 
+        public WorldModel()
+        { }
+
         public WorldModel(WorldHandler worldHandler)
         {
-            BridgeBuilder.BuildBridge
-                (worldHandler.PortalHandlers,
+            ConnectToWorld(worldHandler);
+        }
+
+        internal void ConnectToWorld(WorldHandler worldHandler)
+        {
+            BridgeBuilder.BuildBridge(
+                ref m_IPortalModelsBridge,
+                worldHandler.PortalHandlers,
                 this.IPortalModels,
                 ph => new PortalModel(ph));
 
-            BridgeBuilder.BuildBridge
-                (worldHandler.RecentMessages,
+            BridgeBuilder.BuildBridge(
+                ref m_RecentMessagesBridge,
+                worldHandler.RecentMessages,
                 this.RecentMessages,
                 mess => mess);
         }

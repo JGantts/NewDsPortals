@@ -11,8 +11,8 @@
         <TextBlock Text="{Binding Path=On}" />
         <TextBlock Text="{Binding Path=Open}" />
         <StackPanel Orientation="Horizontal">
-            <Button Content="Turn On" />
-            <Button Content="Turn Off" />
+            <Button Content="Turn On" Command="{Binding TurnOnCommand}"/>
+            <Button Content="Turn Off" Command="{Binding TurnOffCommand}"/>
         </StackPanel>
     </StackPanel>
 </UserControl>

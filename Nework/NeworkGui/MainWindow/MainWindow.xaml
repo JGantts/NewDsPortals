@@ -15,9 +15,8 @@
         <!-- Menu bar -->
         <Grid Grid.Row="0">
             <Menu Height="24">
-                <MenuItem Header="Fuck">
-                    <MenuItem Header="Off" />
-                    <MenuItem Header="You" />
+                <MenuItem Header="File">
+                    <MenuItem Header="Connect to World"  Command="{Binding ConnectToWorld}" />
                 </MenuItem>
             </Menu>
         </Grid>
@@ -55,10 +54,10 @@
                             </Border>
                         </Grid>
                     </Grid>
-                    <!-- World Tabs -->
+                    <!-- World Panel -->
                     <Grid Grid.Row="1">
                         <Border BorderThickness="1" BorderBrush="Black" Margin="5">
-                            <gui:WorldTabController />
+                            <gui:WorldPanelView />
                         </Border>
                     </Grid>
                 </Grid>

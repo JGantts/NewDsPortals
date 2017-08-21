@@ -28,10 +28,10 @@ namespace Nework.Orchestration.EngineHandlers
 
         public WorldHandler()
             : this(new DirectoryInfo(
-                @"C:\Users\jacob\Documents\Creatures\Docking Station\My Worlds\DummyWorld"))
+                @"C:\Users\jacob\Documents\Creatures\Docking Station\My Worlds\Nework Testing 1.0"))
         { }
 
-        internal void NewPortal(ParameterlessMessageEventArgs eventArgs)
+        internal void NewPortal(MessageEventArgs eventArgs)
         {
             Debug.Assert(eventArgs.Type == MessegeType.Portal_WorldLoaded);
             PortalHandlers.Add(new PortalHandler(this, m_engineConnection, eventArgs));

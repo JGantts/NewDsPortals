@@ -1,7 +1,10 @@
 ﻿using Nework.CommonLibrary;
+using Nework.Gui.Common;
 using Nework.Orchestration.Model;
 using System;
 using System.ComponentModel;
+using System.Linq.Expressions;
+using System.Windows.Input;
 
 namespace Nework.Gui.ViewModels
 {
@@ -18,34 +21,40 @@ namespace Nework.Gui.ViewModels
 
         private State Current
         {
-            get { return _Current; }
-            set { _Current = value; }
+            get { return m_Current; }
+            set { lock (m_Lock) { m_Current = value; } }
         }
-        private State _Current;
+        private State m_Current;
 
         public bool On
         {
-            get { return (_Current & State.On) == State.On; }
+            get { return (m_Current & State.On) == State.On; }
             set
             {
-                if (value)
-                    _Current |= State.On;
-                else
-                    _Current &= ~State.On;
-                OnPropertyChanged(nameof(On));
+                lock (m_Lock)
+                {
+                    if (value)
+                        m_Current |= State.On;
+                    else
+                        m_Current &= ~State.On;
+                    OnPropertyChanged(nameof(On));
+                }
             }
         }
 
         public bool Open
         {
-            get { return (_Current & State.Open) == State.Open; }
+            get { return (m_Current & State.Open) == State.Open; }
             set
             {
-                if (value)
-                    _Current |= State.Open;
-                else
-                    _Current &= ~State.Open;
-                OnPropertyChanged(nameof(Open));
+                lock (m_Lock)
+                {
+                    if (value)
+                        m_Current |= State.Open;
+                    else
+                        m_Current &= ~State.Open;
+                    OnPropertyChanged(nameof(Open));
+                }
             }
         }
 
@@ -54,9 +63,12 @@ namespace Nework.Gui.ViewModels
             get { return _Name; }
             set
             {
-                _Name = value;
-                m_Portal.Name = _Name;
-                OnPropertyChanged(nameof(Name));
+                lock (m_Lock)
+                {
+                    _Name = value;
+                    m_Portal.Name = _Name;
+                    OnPropertyChanged(nameof(Name));
+                }
             }
         }
         private string _Name;
@@ -80,11 +92,31 @@ namespace Nework.Gui.ViewModels
             Open = false;
         }
 
+        public ICommand TurnOnCommand
+            => m_TurnOnCommand ?? (m_TurnOnCommand = new CommandHandler(
+            () =>
+            {
+                m_Portal.TurnOn();
+            },
+            () => { return true; }));
+        private ICommand m_TurnOnCommand;
+
+        public ICommand TurnOffCommand
+            => m_TurnOffCommand ?? (m_TurnOffCommand = new CommandHandler(
+            () =>
+            {
+                m_Portal.TurnOff();
+            },
+            () => { return true; }));
+        private ICommand m_TurnOffCommand;
+
+        private object m_Lock = new object();
+
         private IPortalModel m_Portal { get; }
         public PortalViewModel(IPortalModel portal)
         {
             m_Portal = portal;
-            
+
             Name = m_Portal.Name;
 
             m_Portal.PropertyChanged += Portal_PropertyChanged;

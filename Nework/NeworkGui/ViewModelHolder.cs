@@ -15,10 +15,10 @@ namespace Nework.Gui
                 = new MainWindowViewModel(mainModel));
         private static MainWindowViewModel m_MainWindowViewModel;
 
-        internal static WorldTabControllerViewModel WorldTabControllerViewModel 
+        internal static WorldPanelViewModel WorldPanelViewModel 
             => m_WorldTabControllerViewModel ?? (m_WorldTabControllerViewModel 
-                = new WorldTabControllerViewModel(mainModel));
-        private static WorldTabControllerViewModel m_WorldTabControllerViewModel;
+                = new WorldPanelViewModel(mainModel));
+        private static WorldPanelViewModel m_WorldTabControllerViewModel;
 
         private static MainModel mainModel = new MainModel();
     }

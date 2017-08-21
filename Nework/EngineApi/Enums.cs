@@ -20,14 +20,24 @@
 
     public enum MessegeType
     {
+        MessageHandler_New,
+        CommandHandler_New,
+        Portal_New,
+
+        Portal_ExecutedCommand,
+        Portal_Exported,
+        Portal_Imported,
+        Portal_DidntImport,
         Portal_Opened,
+        Portal_Closed,
+        Portal_WorldLoaded,
+
+        /*Portal_Opened,
         Portal_Closed,
 
         Portal_TurnedOn,
         Portal_TurnedOff,
         Portal_PingReply,
-        Portal_WorldLoaded,
-        Portal_New,
 
         Portal_Imported,
         Portal_Exported,
@@ -37,6 +47,6 @@
         Portal_GreenSet,
         Portal_BlueSet,
         Portal_RotationSet,
-        Portal_SwapSet,
+        Portal_SwapSet,*/
     }
 }

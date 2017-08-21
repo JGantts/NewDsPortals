@@ -85,17 +85,22 @@ namespace Nework.EngineApi
             {
                 throw new EngineApiException($"Couldn't open {EngineOutFile} of world {m_WorldDirName}", e);
             }
+            catch (IOException)
+            {
+                //File being used by engine
+                //  (probably) TODO: add logging so save someone's sanity later
+            }
             finally
             {
                 fileStream?.Close();
             }
 
-            foreach (string line in lines)
+            foreach (string line in lines.OrderBy(x => x))
             {
                 //line in form "001 009 Portal_TurnedOn" meaning worldTick:1 agentId:9 portal turned on
                 //or "078 040 Portal_Imported 001_blue-0493-.." meaning worldTick:78 agentId:009 imported norn x
                 string[] chunks = line.Split(' ');
-                if (chunks.Length == 3 || chunks.Length == 4)
+                if (chunks.Length >= 3)
                 {
                     int worldTicks;
                     int agentId;
@@ -105,18 +110,7 @@ namespace Nework.EngineApi
                         MessegeType type;
                         if (Enum.TryParse(chunks[2], out type))
                         {
-                            if (chunks.Length == 3)
-                            {
-                                MessageEvent(this, new ParameterlessMessageEventArgs(agentId, worldTicks, type));
-                            }
-                            else if (chunks.Length == 4)
-                            {
-                                MessageEvent(this, new ParameteredMessageEventArgs(agentId, worldTicks, type, chunks[3]));
-                            }
-                            else
-                            {
-                                throw new EngineApiException($"Bad Line. Can't parse line: {line}");
-                            }
+                            MessageEvent(this, new MessageEventArgs(agentId, worldTicks, type, chunks.Skip(2)));
                         }
                         else
                         {

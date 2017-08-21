@@ -31,9 +31,6 @@ namespace Nework.EngineApi
             m_CommandWriter = new CommandWriter(journalDir);
         }
 
-        public void SendCommand(int agentId, CommandType commandType)
-            => m_CommandWriter.SendCommand(agentId, commandType);
-
 
         public void SendCommand(int agentId, CommandType commandType, string parameter)
             => m_CommandWriter.SendCommand(agentId, commandType, parameter);

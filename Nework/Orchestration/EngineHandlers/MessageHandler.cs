@@ -28,8 +28,13 @@ namespace Nework.Orchestration.EngineHandlers
                     case MessegeType.Portal_New:
                         m_WorldHandler.PortalHandlers.Add(new PortalHandler(m_WorldHandler, m_WorldHandler.m_engineConnection, e));
                         break;
+                    case MessegeType.MessageHandler_New:
+                    case MessegeType.CommandHandler_New:
+                        //Don't actaully care about this, yet.
+                        break;
                     default:
-                        throw new OrchestrationException();
+                        break;
+                        //throw new OrchestrationException();
                 }
             }
         }

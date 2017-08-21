@@ -5,13 +5,13 @@ using System.ComponentModel;
 
 namespace Nework.Gui.Views
 {
-    public partial class WorldTabView : TabItem
+    public partial class WorldPanelView : Grid
     {
-        private WorldTabViewModel m_ViewModel => (DataContext as WorldTabViewModel);
+        private WorldPanelViewModel m_ViewModel => (DataContext as WorldPanelViewModel);
 
-        public WorldTabView(WorldTabViewModel vm)
+        public WorldPanelView()
         {
-            this.DataContext = vm;
+            this.DataContext = ViewModelHolder.WorldPanelViewModel;
 
             InitializeComponent();
 

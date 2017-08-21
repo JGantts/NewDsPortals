@@ -27,18 +27,29 @@ doif va33 = 0
 	attr 16
 	tick 20
 
+*Write a new Message
+	setv va70 UNID
+	new: simp 1 1 24414 "blnk" 0 0 0
+	attr 16
+	setv ov00 wtik
+	setv ov01 va70
+	sets ov02 "MessageHandler_New"
+*	set Message to state Done
+	setv ov99 1
+*End message
+
 *make CommandHandler
 	new: simp 1 1 24412 "blnk" 0 0 0
 	attr 16
 	tick 100
 
 *Write a new Message
-	setv va70 0
+	setv va70 UNID
 	new: simp 1 1 24414 "blnk" 0 0 0
 	attr 16
 	setv ov00 wtik
 	setv ov01 va70
-	sets ov02 "MessageAndCommandHandler_New"
+	sets ov02 "CommandHandler_New"
 *	set Message to state Done
 	setv ov99 1
 *End message
@@ -110,7 +121,7 @@ scrp 2 2 24411 0
 		attr 16
 		setv ov00 wtik
 		setv ov01 va70
-		sets ov02 "Portal_Open"
+		sets ov02 "Portal_Opened"
 *		set Message to state Done
 		setv ov99 1
 *End Message
@@ -125,7 +136,7 @@ scrp 2 2 24411 0
 		attr 16
 		setv ov00 wtik
 		setv ov01 va70
-		sets ov02 "Portal_Close"
+		sets ov02 "Portal_Closed"
 *		set Message to state Done
 		setv ov99 1
 *End Message
@@ -185,6 +196,20 @@ endm
 *_p2_ is the parameter if any
 scrp 2 2 24411 1000
 	lock
+	sets va33 ""
+*Write a new Message
+	setv va70 UNID
+	new: simp 1 1 24414 "blnk" 0 0 0
+	attr 16
+	setv ov00 wtik
+	setv ov01 va70
+	sets ov02 "Portal_ExecutingCommand"
+	adds ov02 _p1_
+	adds ov02 " "
+	adds ov02 _p2_
+*	set Message to state Done
+	setv ov99 1
+*End message
 ******************
 ***begin TurnOn***
 ******************
@@ -199,16 +224,6 @@ scrp 2 2 24411 1000
 		endi
 *set state On
 		setv ov02 1
-*Write a new Message
-		setv va70 UNID
-		new: simp 1 1 24414 "blnk" 0 0 0
-		attr 16
-		setv ov00 wtik
-		setv ov01 va70
-		sets ov02 "Portal_TurnedOn"
-*	set Message to state Done
-		setv ov99 1
-*End message
 ****************
 ***end TurnOn***
 ****************
@@ -224,16 +239,6 @@ scrp 2 2 24411 1000
 		endi
 *set state Off
 		setv ov02 0
-*Write a new Message
-		setv va70 UNID
-		new: simp 1 1 24414 "blnk" 0 0 0
-		attr 16
-		setv ov00 wtik
-		setv ov01 va70
-		sets ov02 "Portal_TurnedOff"
-*	set Message to state Done
-		setv ov99 1
-*End message
 *****************
 ***end TurnOff***
 *****************
@@ -262,6 +267,11 @@ scrp 2 2 24411 1000
 *stim traveled through meta door
 					stim writ targ 95 1
 *Write a new Message
+*	(Most commands are simple and if this script finishes
+*		the command was successful; and repeating the command
+*		twice will at worst cause weird animations. This
+*		command is much more important and also much more
+*		finiky. So report back immediatly)
 					setv va70 UNID
 					new: simp 1 1 24414 "blnk" 0 0 0
 					attr 16
@@ -272,6 +282,18 @@ scrp 2 2 24411 1000
 *				set Message to state Done
 					setv ov99 1
 *End message
+				else
+*Write a new Message
+					setv va70 UNID
+					new: simp 1 1 24414 "blnk" 0 0 0
+					attr 16
+					setv ov00 wtik
+					setv ov01 va70
+					sets ov02 "Portal_DidntImport "
+					adds ov02 _p2_
+*				set Message to state Done
+					setv ov99 1
+*End message				
 				endi
 			endi
 		endi
@@ -283,17 +305,6 @@ scrp 2 2 24411 1000
 *****************
 	elif _p1_ = "Portal_SetId"
 		sets ov00 _p2_
-*Write a new Message
-		setv va70 UNID
-		new: simp 1 1 24414 "blnk" 0 0 0
-		attr 16
-		setv ov00 wtik
-		setv ov01 va70
-		sets ov02 "Portal_SetId "
-		adds ov02 _p2_
-*		set Message to state Done
-		setv ov99 1
-*End message
 ***************
 ***end SetId***
 ***************
@@ -302,17 +313,6 @@ scrp 2 2 24411 1000
 *******************
 	elif _p1_ = "Portal_SetName"
 		sets name "tooltip" _p2_
-*Write a new Message
-		setv va70 UNID
-		new: simp 1 1 24414 "blnk" 0 0 0
-		attr 16
-		setv ov00 wtik
-		setv ov01 va70
-		sets ov02 "Portal_SetName "
-		adds ov02 _p2_
-*		set Message to state Done
-		setv ov99 1
-*End message
 *****************
 ***end SetName***
 *****************
@@ -320,33 +320,43 @@ scrp 2 2 24411 1000
 ***begin BogusCommand***
 ************************
 	else
-*Write a new Message
-		setv va70 UNID
-		new: simp 1 1 24414 "blnk" 0 0 0
-		attr 16
-		setv ov00 wtik
-		setv ov01 va70
-		sets ov02 "Portal_BogusCommand "
-*if _p1_ is a string
-		doif type _p1_ = 2
-			adds ov02 _p1_
-		else
-			adds ov02 "NoCommand"
-		endi
-		adds ov02 " "
-*if _p2_ is a string
-		doif type _p2_ = 2
-			adds ov02 _p2_
-		else
-			adds ov02 "NoParameter"
-		endi
-*		set Message to state Done
-		setv ov99 1
+		sets va33 "CommandNotRecognized"
 *End message
 **********************
 ***end BogusCommand***
 **********************
 	endi
+*Write a new Message
+	targ ownr
+	setv va70 UNID
+	new: simp 1 1 24414 "blnk" 0 0 0
+	attr 16
+	setv ov00 wtik
+	setv ov01 va70
+	sets ov02 "Portal_ExecutedCommand"
+*if _p1_ is a string
+	doif type _p1_ = 2
+		adds ov02 " "
+		adds ov02 _p1_
+	else
+		adds ov02 " NoCommand"
+	endi
+*if _p2_ is a string
+	doif type _p2_ = 2
+		adds ov02 " "
+		adds ov02 _p2_
+	else
+		adds ov02 " NoParameter"
+	endi
+	adds ov02 " Info: "
+	doif va33 = ""
+		adds ov02 "none"
+	else
+		adds ov02 va33
+	endi
+*		set Message to state Done
+	setv ov99 1
+*End message
 	unlk
 endm
 
@@ -499,9 +509,9 @@ scrp 1 1 24412 9
 			outs ""
 			file oclo
 		endi
-		*close the input stream AFTER erasing file.
-		* hopefully this way the external program can't write a
-		* command between us reading it and erasing it
+*close the input stream AFTER erasing file.
+* hopefully this way the external program can't write a
+* command between us reading it and erasing it
 		file iclo
 	endi
 	unlk
@@ -581,8 +591,8 @@ scrp 1 1 24413 255
 		setv va70 0
 		new: simp 1 1 24414 "blnk" 0 0 0
 		attr 16
-		setv ov00 va70
-		setv ov01 wtik
+		setv ov00 wtik
+		setv ov01 va70
 		sets ov02 "MessageHandler_Exception"
 *		set Message to state Done
 		setv ov99 1

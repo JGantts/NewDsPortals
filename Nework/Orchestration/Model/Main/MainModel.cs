@@ -1,22 +1,30 @@
 ﻿using Nework.CommonLibrary;
-using System.Collections.ObjectModel;
+using System.IO;
 
 namespace Nework.Orchestration.Model
 {
-    public class MainModel
+    public class MainModel : PropertyChangeSource
     {
-        public ObservableCollection<IWorldModel> IWorldModels { get; } 
-            = new ObservableCollection<IWorldModel>();
+        public IWorldModel IWorldModel
+        {
+            get { return M_IWorldModel; }
+            private set
+            {
+                M_IWorldModel = value;
+                OnPropertyChanged(nameof(IWorldModel));
+            }
+        }
+        private IWorldModel M_IWorldModel;
 
 
         public MainModel()
         {
-            BridgeBuilder.BuildBridge
-                (Orchestrator.WorldHandlers,
-                this.IWorldModels,
-                wh => new WorldModel(wh));
+            IWorldModel = new WorldModel();
         }
 
-        
+        public void ConnectToWorld(DirectoryInfo worldDirectory)
+        {
+            IWorldModel = new WorldModel(Orchestrator.ConnectToWorld(worldDirectory));
+        }
     }
 }

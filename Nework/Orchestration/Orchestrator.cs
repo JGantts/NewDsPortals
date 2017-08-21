@@ -7,17 +7,15 @@ namespace Nework.Orchestration
 {
     internal static class Orchestrator
     {
-        internal static ObservableCollection<WorldHandler> WorldHandlers { get; }
-            = new ObservableCollection<WorldHandler>();
+        internal static WorldHandler WorldHandler { get; private set; }
+
 
         static Orchestrator()
-        {
-            WorldHandlers.Add(new WorldHandler());
-        }
+        { }
 
-        private static EngineConnection ConnectToWorld(DirectoryInfo worldDirectory)
+        internal static WorldHandler ConnectToWorld(DirectoryInfo worldDirectory)
         {
-            return null;
+            return WorldHandler = new WorldHandler(worldDirectory);
         }
     }
 }

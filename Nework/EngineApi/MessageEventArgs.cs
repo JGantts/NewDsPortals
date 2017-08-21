@@ -1,38 +1,27 @@
-﻿using System;
+﻿using Nework.EngineApi.Exceptions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Nework.EngineApi
 {
-     public class MessageEventArgs : EventArgs
+    public class MessageEventArgs : EventArgs
     {
         public int AgentId { get; }
         public int WorldTciks { get; }
         public MessegeType Type { get; }
+        public IEnumerable<string> Parameters { get; }
 
-        internal MessageEventArgs(int agentId, int worldTicks, MessegeType type)
+        internal MessageEventArgs(int agentId, int worldTicks, MessegeType type, IEnumerable<string> parameters)
         {
             AgentId = agentId;
             WorldTciks = worldTicks;
             Type = type;
-        }
-    }
-
-    public class ParameterlessMessageEventArgs : MessageEventArgs
-    {
-
-        public ParameterlessMessageEventArgs(int agentId, int worldTicks, MessegeType type)
-            : base(agentId, worldTicks, type)
-        {
-        }
-    }
-
-    public class ParameteredMessageEventArgs : MessageEventArgs
-    {
-        public string Parameter { get; }
-
-        public ParameteredMessageEventArgs(int agentId, int worldTicks, MessegeType type, string parameter)
-            : base(agentId, worldTicks, type)
-        {
-            Parameter = parameter;
+            Parameters = parameters.ToList();
+            if (!Parameters.Any())
+            {
+                throw new EngineApiException("No parameters found.");
+            }
         }
     }
 }

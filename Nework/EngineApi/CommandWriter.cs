@@ -35,10 +35,10 @@ namespace Nework.EngineApi
             timer.RunWorkerAsync();
         }
 
-        internal void SendCommand(int agentId, CommandType commandType)
+        /*internal void SendCommand(int agentId, CommandType commandType)
         {
             SendCommand(agentId, commandType.ToString(), string.Empty);
-        }
+        }*/
 
 
         internal void SendCommand(int agentId, CommandType commandType, string parameter)
@@ -80,8 +80,10 @@ namespace Nework.EngineApi
             {
                 File.AppendAllLines(_EngineInFilePath, commands);
             }
-            catch (Exception)
+            catch (IOException)
             {
+                //File being used by engine
+                //  (probably) TODO: add logging so save someone's sanity later
                 Thread.Sleep(500);
                 WriteCommandsToFile(commands);
             }

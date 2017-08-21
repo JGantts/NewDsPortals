@@ -56,20 +56,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\CommandHandler.cs" />
     <Compile Include="Exceptions\NetworkGuiExceptions.cs" />
     <Compile Include="MainWindow\MainWindowViewModel.cs" />
     <Compile Include="ViewModelHolder.cs" />
-    <Compile Include="WorldsTab\PortalView.xaml.cs">
+    <Compile Include="WorldPanel\PortalView.xaml.cs">
       <DependentUpon>PortalView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WorldsTab\PortalViewModel.cs" />
-    <Compile Include="WorldsTab\WorldTabControllerViewModel.cs" />
-    <Compile Include="WorldsTab\WorldTabViewModel.cs" />
-    <Compile Include="WorldsTab\WorldTabControllerView.xaml.cs">
-      <DependentUpon>WorldTabControllerView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WorldsTab\WorldTabView.xaml.cs">
-      <DependentUpon>WorldTabView.xaml</DependentUpon>
+    <Compile Include="WorldPanel\PortalViewModel.cs" />
+    <Compile Include="WorldPanel\WorldPanelViewModel.cs" />
+    <Compile Include="WorldPanel\WorldPanelView.xaml.cs">
+      <DependentUpon>WorldPanelView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -83,15 +80,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="WorldsTab\PortalView.xaml">
+    <Page Include="WorldPanel\PortalView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WorldsTab\WorldTabControllerView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WorldsTab\WorldTabView.xaml">
+    <Page Include="WorldPanel\WorldPanelView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
